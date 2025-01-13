@@ -26,13 +26,13 @@ int main() {
     char output_file[100]; // Nome file di output
 
     // Input: intervallo [a, b], numero di punti e nome file
-    printf("Inserisci l'estremo inferiore dell'intervallo a (0 < a < 10): ");
+    printf("Inserisci l'estremo inferiore dell'intervallo a (0 <= a < 10): ");
     scanf("%lf", &a);
     printf("Inserisci l'estremo superiore dell'intervallo b (a < b <= 10): ");
     scanf("%lf", &b);
 
-    if (a < 0 || b > 10 || a >= b) {
-        printf("Intervallo non valido. Assicurati che 0 < a < b <= 10.\n");
+    if (a <= 0 || b > 10 || a >= b) {
+        printf("Intervallo non valido.\n");
         return 1;
     }
 
@@ -48,8 +48,9 @@ int main() {
     scanf("%s", output_file);
 
     // Determinazione del rettangolo di bounding
+    // l'incremento di 0.001 è scelto per bilanciare la necessità di precisione con l'efficienza computazionale.
     double max_f = 0;
-    for (double x = a; x <= b; x += 0.001) {
+    for (double x = a; x <= b; x += 0.001) { 
         double f_x = integrand(x);
         if (f_x > max_f) {
             max_f = f_x;
@@ -63,7 +64,13 @@ int main() {
         return 1;
     }
 
-    // Generazione punti casuali e calcolo dell'integrale
+    
+    /*
+    Generazione punti casuali e calcolo dell'integrale
+    Questa parte del codice genera punti casuali nell'area del rettangolo di bounding e conta 
+    quanti di questi punti cadono sotto la curva della funzione integrand. 
+    Questi punti vengono anche salvati in un file di output per eventuali analisi successive.
+    */
     int inside = 0;
     srand(time(NULL)); // Inizializzazione del generatore di numeri casuali
 
